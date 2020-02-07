@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Windows;
 using System.Windows.Media.Imaging;
 
 namespace App.Controllers
@@ -80,24 +82,27 @@ namespace App.Controllers
         [HttpPost]
         public ActionResult About(HttpPostedFileBase files)
         {
-
+            //ConfigurationManager.AppSettings["FileType"].Contains(file.format);
             if (files != null)
             {
                 FileInfo info;
                 info = new FileInfo(files.InputStream.ToString());
-                
-                
-                    if (files.ContentType == "image/jpeg")
+
+              MessageBox.Show(ConfigurationManager.AppSettings.Get("FileType") + files.ContentType + "\n" + ConfigurationManager.AppSettings.Get("FileType").Contains(files.ContentType));
+                    if (ConfigurationManager.AppSettings.Get("FileType").Contains(files.ContentType))
                     {
-                        // Verify that the user selected a file
-                        if (files != null && files.ContentLength > 0)
+                    MessageBox.Show("Type Correct");
+                    // Verify that the user selected a file
+                    if (files != null && files.ContentLength > 0)
                         {
-                            // extract only the filename
-                            var fileName = Path.GetFileName(files.FileName);
+                        MessageBox.Show("File isn't empty");
+                        // extract only the filename
+                        var fileName = Path.GetFileName(files.FileName);
                         // store the file inside ~/App_Data/uploads folder
                             var path1 = Path.Combine(Server.MapPath("~/Content/Temp"), fileName);
-                            try
-                            {
+                    MessageBox.Show("File add in temp directory");
+                        try
+                        {
                                 files.SaveAs(path1);
                             }
                             catch
@@ -105,14 +110,18 @@ namespace App.Controllers
                             ViewBag.Error = "Запрещённое действие";
                             }
                             
-                            var path = Path.Combine(Server.MapPath("~/Content/Images"), fileName);
-                            // ViewBag.Error = path.ToString();
-                            DateTime time = DateTime.Now.AddYears(-1);
+                            var path = Path.Combine(Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory")), fileName);
+                    MessageBox.Show("File add in main directory");
+                        // ViewBag.Error = path.ToString();
+                        DateTime time = DateTime.Now.AddYears(-1);
                             if (info.Directory.LastAccessTime >= time)
                             {
+
                             Picture picture = new Picture();
-                            if (picture.MD5_(path1) == false)
+                            if (picture.MD5_(path1,Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory"))) == false)
                             {
+                                MessageBox.Show("EXIF correct");
+
                                 files.SaveAs(path);
                                 try
                                 {

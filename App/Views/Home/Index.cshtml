@@ -1,33 +1,36 @@
 ﻿@{
 
     ViewBag.Title = "Home Page";
-
-    string[] files = Directory.GetFiles(@"C:\Users\tdp4t\source\repos\App\App\Content\Images");
+    Directory.CreateDirectory(Server.MapPath(System.Configuration.ConfigurationManager.AppSettings.Get("ImageDirectory")));
+    string[] files = Directory.GetFiles(Server.MapPath(System.Configuration.ConfigurationManager.AppSettings.Get("ImageDirectory")));
 
     int i = 0;
-    int b = 0;
     Picture picture = new Picture();
+
 }
 @using App.Controllers;
+
 <!--<h6>Для добавления картинки перейдите <a href="https://localhost:44373/Home/About">сюда</a></h6>-->
 @using (Html.BeginForm("Index", "Home", FormMethod.Post))
 {
     <div class="loc">
+        
         @while (i < files.Length)
-                {
-
-                    //<div id="@i">
-                    //string sas = files[i];
-                    picture.Path = files[i];
-                    picture.Preview();
+        {
+            
+            //<div id="@i">
+            //string sas = files[i];
+            picture.Path = files[i];
+            picture.Preview();
+            
             <div class="lol">
-                <img id="@files[i].Remove(0, 51)" class="image" src="/Content/Images/@files[i].Substring(51)" onclick="resize()" 
+                <img id="@files[i].Remove(0, 51)" class="image" src="/Content/Images/@Path.GetFileName(files[i])" onclick="resize()"
                      title="Файл: @picture.Stats[7],
-Название: @picture.Stats[0], 
-Производитель камеры: @picture.Stats[1], 
-Модель камеры: @picture.Stats[2], 
-Дата сьемки: @picture.Stats[3], 
-Разрешение: @picture.Stats[4] x @picture.Stats[5], 
+Название: @picture.Stats[0],
+Производитель камеры: @picture.Stats[1],
+Модель камеры: @picture.Stats[2],
+Дата сьемки: @picture.Stats[3],
+Разрешение: @picture.Stats[4] x @picture.Stats[5],
 Размер: @picture.Stats[6] КБ" />
                 <input class="button" type="submit" name="@files[i]" value="🗑" title="Удалить картинку" />
                 <input class="button" type="submit" name="@files[i]1" value="⇩" title="Скачать картинку" />
@@ -36,6 +39,7 @@
             //<a href="~/Views/Home/DeleteImage/@files[i]">Delete Image</a>
             i++;
         }
+        @ViewBag.LOLS
     </div>
 
 }
@@ -68,7 +72,7 @@
         z-index: 1;
         position: relative;
         bottom: 12.6%;
-        right: -81%;
+        right: -77%;
     }
 
     .popup {
