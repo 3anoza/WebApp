@@ -38,11 +38,12 @@ namespace App.Controllers
         {
             //...
         }
-        public bool MD5_(string filePath)
+        public bool MD5_(string testedImage, string ImagesPath)
         {
             bool res = false;
-            Bitmap bmp1 = (Bitmap)Bitmap.FromFile(filePath);
-            string[] files = Directory.GetFiles(@"C:\Users\tdp4t\source\repos\App\App\Content\Images");
+            
+            Bitmap bmp1 = (Bitmap)Bitmap.FromFile(testedImage);
+            string[] files = Directory.GetFiles(ImagesPath);
             Bitmap bmp2;
             for (int i = 0; i < files.Length; i++)
             {
@@ -102,47 +103,69 @@ namespace App.Controllers
         /// </summary>
         public void Preview()
         {
+            // Create value, he containted information about current file
             FileInfo info = new FileInfo(Path);
+            // Create file stream, he will read data from current file
             FileStream fsl = new FileStream(Path, FileMode.Open);
-
+            // Create value, he containted bitmap frame from file stream 
             BitmapSource img = BitmapFrame.Create(fsl);
+            // Create value. he containted all metadata from current bitmap frame. This working only for JPEG files
             BitmapMetadata md = (BitmapMetadata)img.Metadata;
-            if (md.Title == null)
+            // check what's the file type we have in this method 
+            if (Path.Contains("png"))
             {
+                // set all metadata information in unknown status
                 Stats[0] = "Информация отсутсвует";
-            }
-            else
-            {
-               Stats[0] = md.Title.ToString();
-            }
-            if (md.CameraManufacturer == null)
-            {
                 Stats[1] = "Информация отсутсвует";
-            }
-            else
-            {
-               Stats[1] = md.CameraManufacturer.ToString();
-            }
-            if (md.CameraModel == null)
-            {
                 Stats[2] = "Информация отсутсвует";
-            }
-            else
-            {
-                Stats[2] = md.CameraModel.ToString();
-            }
-            if (md.DateTaken == null)
-            {
                 Stats[3] = "Информация отсутсвует";
             }
             else
             {
-                Stats[3] = md.DateTaken.ToString();
+                // check file title from metadata
+                if (md.Title == null)
+                {
+                    Stats[0] = "Информация отсутсвует";
+                }
+                else
+                {
+                    Stats[0] = md.Title.ToString();
+                }
+                // check camera creator from metadata
+                if (md.CameraManufacturer == null)
+                {
+                    Stats[1] = "Информация отсутсвует";
+                }
+                else
+                {
+                    Stats[1] = md.CameraManufacturer.ToString();
+                }
+                // check camera model from metadata
+                if (md.CameraModel == null)
+                {
+                    Stats[2] = "Информация отсутсвует";
+                }
+                else
+                {
+                    Stats[2] = md.CameraModel.ToString();
+                }
+                // check file data maken from metadata
+                if (md.DateTaken == null)
+                {
+                    Stats[3] = "Информация отсутсвует";
+                }
+                else
+                {
+                    Stats[3] = md.DateTaken.ToString();
+                }
             }
+            // save file extension 
             Stats[4] = img.PixelWidth.ToString();
             Stats[5] = img.PixelHeight.ToString();
+            // convert file size from byte to Kbyte
             double KB = (double)info.Length / 1024;
             Stats[6] = Math.Round(KB,2).ToString();
+            // save filename
             Stats[7] = info.Name.ToString();
             fsl.Close();
         }
