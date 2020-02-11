@@ -40,7 +40,7 @@ namespace App.Controllers
         }
         public bool MD5_(string testedImage, string ImagesPath)
         {
-            bool res = false;
+            bool res;
             
             Bitmap bmp1 = (Bitmap)Bitmap.FromFile(testedImage);
             string[] files = Directory.GetFiles(ImagesPath);
