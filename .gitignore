@@ -1,6 +1,7 @@
 #Visual Studio directory
-packages
-App/bin
-App/Content/Images/
-App/Content/Temp/
+/packages
+/App/bin/
+/App/App_Data/
+/App/Content/Images/*
+/App/Content/Temp/*
 #Visual Studio files
