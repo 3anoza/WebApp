@@ -8,11 +8,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
 using System.Windows.Media.Imaging;
+using App.Constants;
 
 namespace App.Controllers
 {
     public class Picture
-    { 
+    {
         /// <summary>
         /// Получает или задает путь к файлам сервера
         /// </summary>
@@ -25,7 +26,7 @@ namespace App.Controllers
         /// Переопределяет индекс файла который используется в Index.cshtml или _Layout.cshtml 
         /// </summary>
         public int Index { get; set; }
-        public string[] Stats = new string[8];
+        public string[] Stats = new string[ConstantProvider.exifParamSize];
         private void Imgs(object sender, EventArgs e)
         {
             //...
@@ -45,17 +46,18 @@ namespace App.Controllers
             Bitmap bmp1 = (Bitmap)Bitmap.FromFile(testedImage);
             string[] files = Directory.GetFiles(ImagesPath);
             Bitmap bmp2;
-            for (int i = 0; i < files.Length; i++)
+            for (int i = 0; i < files.Length;)
             {
                 bmp2 = (Bitmap)Bitmap.FromFile(files[i]);
                 res = CompareBitmapsFast(bmp1, bmp2);
                 bmp2.Dispose();
-                return res;
+                if (!res)
+                    return res;
                 //Console.WriteLine(string.Format("CompareBitmapsFast Time: {0} ms", sw.ElapsedMilliseconds));
 
             }
             bmp1.Dispose();
-            return false;
+            return true;
             //...
         }
 
@@ -96,23 +98,20 @@ namespace App.Controllers
         }
 
         /// <summary>
-        /// Метод обрабатывает метадату изображения
-        /// <para>
-        /// для работы требует заранее заданую переменную Path
-        /// </para>
+        /// writes EXIF ​​date of image from specified path (<paramref name="pathToImage"/>) 
         /// </summary>
-        public void Preview()
+        public void Preview(string pathToImage)
         {
             // Create value, he containted information about current file
-            FileInfo info = new FileInfo(Path);
+            FileInfo info = new FileInfo(pathToImage);
             // Create file stream, he will read data from current file
-            FileStream fsl = new FileStream(Path, FileMode.Open);
+            FileStream fsl = new FileStream(pathToImage, FileMode.Open);
             // Create value, he containted bitmap frame from file stream 
             BitmapSource img = BitmapFrame.Create(fsl);
             // Create value. he containted all metadata from current bitmap frame. This working only for JPEG files
             BitmapMetadata md = (BitmapMetadata)img.Metadata;
             // check what's the file type we have in this method 
-            if (Path.Contains("png"))
+            if (pathToImage.Contains("png"))
             {
                 // set all metadata information in unknown status
                 Stats[0] = "Информация отсутсвует";

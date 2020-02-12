@@ -12,53 +12,74 @@ using System.Web;
 using System.Web.Mvc;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using App.Constants;
 
 namespace App.Controllers
 {
     public class HomeController : Controller
     {
-        //Picture picture = new Picture();
         [HttpGet]
         public ActionResult Index()
         {
 
-            //string[] files = Directory.GetFiles("/Content/Images/");
             return View();
         }
+        // before downloading/deleting the user must be authorized
         [Authorize]
         [HttpPost]
+        // get a collection of pressed input-buttons and get the value from the desired 
         public ActionResult Index(FormCollection form)
         {
-            string LOL = form.GetKey(0);
-            ViewBag.WriteLine = LOL;
-            if (LOL[LOL.Length - 1] == '1')
+            // get first input-button id where contain full path
+            string filePath = form.GetKey(0);
+            // start download/delete logging (get full file path)
+            ViewBag.checkCorrectPath = filePath;
+            MessageBox.Show(ViewBag.checkCorrectPath);
+            // check if the file is in the download mode
+            if (filePath[filePath.Length - 1] == ConstantProvider.downloadMode)
             {
-                ViewBag.WriteLine = LOL.Remove(LOL.Length - 1);
-                LOL = ViewBag.WriteLine;
+                // logging mod check result
+                ViewBag.WriteLine = filePath.Remove(filePath.Length - 1);
+                MessageBox.Show(ViewBag.WriteLine);
+                filePath = ViewBag.WriteLine;
+                // set response header
                 Response.AddHeader(
-                "Content-Disposition", "attachment; filename=\"" + LOL.Remove(0,51) + "\"");
-                Response.WriteFile(LOL);
-                Response.End();
+                "Content-Disposition", "attachment; filename=\"" + Path.GetFileName(filePath) + "\"");
+                try
+                {
+                    // start download
+                    Response.WriteFile(filePath);
+                    // end download
+                    Response.End();
+                }
+                catch (Exception error)
+                {
+                    // logging exception
+                    Debug.WriteLine(ConstantProvider.FILE_DOWNLOADING_FAILED + error.Message);
+                }
                 return null;
             }
             else
             {
+                ViewBag.WriteLine = filePath;
+                MessageBox.Show(ViewBag.WriteLine);
+                // logging mod check result
+                // [here]
+                // Before deleting, check if the file exists at the specified path
                 if ((System.IO.File.Exists(ViewBag.WriteLine))) //+ ViewBag.WriteLine)))
                 {
                     try
                     {
+                        // delete file
                         System.IO.File.Delete(ViewBag.WriteLine);// + ViewBag.WriteLine);
-                        ViewBag.f = "1";
                     }
-                    catch (Exception ex)
+                    catch (Exception error)
                     {
-                        Debug.WriteLine("Deletion of file failed: " + ex.Message);
-                        ViewBag.f = "2";
+                        // logging exception
+                        Debug.WriteLine(ConstantProvider.FILE_DELETION_FAILED + error.Message);
                     }
                 }
-            }
-            
-            //string[] files = Directory.GetFiles("/Content/Images/");
+            }            
             return View();
         }
 
@@ -68,56 +89,43 @@ namespace App.Controllers
             return View();
         }
 
-        /*
-         ViewBag.fSize
-         ViewBag.sizex
-         ViewBag.sizey
-         ViewBag.name
-         ViewBag.ExifVer
-         ViewBag.camBrand
-         ViewBag.camModel
-         ViewBag.createTime
-         ViewBag.timeNow
-         */
         [HttpPost]
         public ActionResult About(HttpPostedFileBase files)
         {
-            //ConfigurationManager.AppSettings["FileType"].Contains(file.format);
             if (files != null)
             {
                 FileInfo info;
                 info = new FileInfo(files.InputStream.ToString());
-
-              MessageBox.Show(ConfigurationManager.AppSettings.Get("FileType") + files.ContentType + "\n" + ConfigurationManager.AppSettings.Get("FileType").Contains(files.ContentType));
-                    if (ConfigurationManager.AppSettings.Get("FileType").Contains(files.ContentType))
-                    {
-                    MessageBox.Show("Type Correct");
+                //***Debug messages*** 
+                //*MessageBox.Show(ConfigurationManager.AppSettings.Get("FileType") + files.ContentType + "\n" + ConfigurationManager.AppSettings.Get("FileType").Contains(files.ContentType));
+                if (ConfigurationManager.AppSettings.Get("FileType").Contains(files.ContentType))
+                {
+                    //*MessageBox.Show("Type Correct");
                     // Verify that the user selected a file
                     if (files != null && files.ContentLength > 0)
-                        {
-                        MessageBox.Show("File isn't empty");
+                    {
+                        //*MessageBox.Show("File isn't empty");
                         // extract only the filename
                         var fileName = Path.GetFileName(files.FileName);
                         // store the file inside ~/App_Data/uploads folder
                             var path1 = Path.Combine(Server.MapPath("~/Content/Temp"), fileName);
-                    MessageBox.Show("File add in temp directory");
+                        //*MessageBox.Show("File add in temp directory");
                         try
                         {
                                 files.SaveAs(path1);
-                            }
-                            catch
-                            {
-                            ViewBag.Error = "Запрещённое действие";
-                            }
-                            
-                            var path = Path.Combine(Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory")), fileName);
-                    MessageBox.Show("File add in main directory");
+                        }
+                        catch (Exception error)
+                        {
+                            ViewBag.Error = error.Message;
+                        }
+                        var path = Path.Combine(Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory")), fileName);
+                        //*MessageBox.Show("File add in main directory");
                         // ViewBag.Error = path.ToString();
                         DateTime time = DateTime.Now.AddYears(-1);
-                            if (info.Directory.LastAccessTime >= time)
-                            {
-
+                        if (info.Directory.LastAccessTime >= time)
+                        {
                             Picture picture = new Picture();
+                            
                             if (picture.MD5_(path1,Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory"))) == false)
                             {
                                 MessageBox.Show("EXIF correct");
@@ -127,37 +135,31 @@ namespace App.Controllers
                                 {
                                     System.IO.File.Delete(path1);
                                 }
-                                catch
+                                catch(Exception error)
                                 {
-                                    ViewBag.Error = "Запрещённое действие";
-                                }
-                                
-                                
+                                    ViewBag.Error = error.Message;
+                                }    
                             }
                             else { ViewBag.Error = "Ошибка: такой файл уже существует"; }
                             }
-                            else
-                            {
-                                ViewBag.Error = "Ошибка: файл создан более чем год назад";
-                                return View();
-                            }
-                           
-                            
-                           
-                        }
                         else
                         {
-                            ViewBag.Error = "Ошибка: файл пустой или не выбран";
+                            ViewBag.Error = "Ошибка: файл создан более чем год назад";
                             return View();
-                        }
+                        }   
                     }
                     else
                     {
-                        ViewBag.Error = "Ошибка: формат файла не поддерживаеться";
+                        ViewBag.Error = "Ошибка: файл пустой или не выбран";
                         return View();
                     }
-                    // redirect back to the index action to show the form once again
-               
+                }
+                else
+                {
+                    ViewBag.Error = "Ошибка: формат файла не поддерживаеться";
+                    return View();
+                }
+                // redirect back to the index action to show the form once again
             }
             else
             {

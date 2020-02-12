@@ -19,9 +19,9 @@
         {
             
             //<div id="@i">
-            //string sas = files[i];
-            picture.Path = files[i];
-            picture.Preview();
+            ViewBag.LOLS = files[i];
+            //picture.Path = files[i];
+            picture.Preview(files[i]);
             
             <div class="lol">
                 <img id="@files[i].Remove(0, 51)" class="image" src="/Content/Images/@Path.GetFileName(files[i])" onclick="resize()"
@@ -39,7 +39,7 @@
             //<a href="~/Views/Home/DeleteImage/@files[i]">Delete Image</a>
             i++;
         }
-        @ViewBag.LOLS
+        
     </div>
 
 }
