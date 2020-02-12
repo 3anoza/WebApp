@@ -1,7 +1,9 @@
 #Visual Studio directory
 /packages
 /App/bin
-/App/obj/*
+/App/obj
 /App/Content/Images/*
 /App/Content/Temp/*
 #Visual Studio files
+*jpg
+*png
