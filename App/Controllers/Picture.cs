@@ -52,12 +52,12 @@ namespace App.Controllers
                 res = CompareBitmapsFast(bmp1, bmp2);
                 bmp2.Dispose();
                 if (!res)
-                    return res;
+                    return true;
                 //Console.WriteLine(string.Format("CompareBitmapsFast Time: {0} ms", sw.ElapsedMilliseconds));
 
             }
             bmp1.Dispose();
-            return true;
+            return false;
             //...
         }
 
