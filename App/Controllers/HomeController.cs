@@ -21,12 +21,12 @@ namespace App.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-
             return View();
         }
         // before downloading/deleting the user must be authorized
         [Authorize]
         [HttpPost]
+        
         // get a collection of pressed input-buttons and get the value from the desired 
         public ActionResult Index(FormCollection form)
         {
@@ -120,15 +120,16 @@ namespace App.Controllers
                         }
                         var path = Path.Combine(Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory")), fileName);
                         //*MessageBox.Show("File add in main directory");
-                        // ViewBag.Error = path.ToString();
                         DateTime time = DateTime.Now.AddYears(-1);
+                        //*MessageBox.Show(time.ToString());
+                        //*MessageBox.Show(info.Directory.LastAccessTime.ToString());
                         if (info.Directory.LastAccessTime >= time)
                         {
                             Picture picture = new Picture();
-                            
+                            //*MessageBox.Show("Pass: problem in copy protect");
                             if (picture.MD5_(path1,Server.MapPath(ConfigurationManager.AppSettings.Get("ImageDirectory"))) == false)
                             {
-                                MessageBox.Show("EXIF correct");
+                               //*MessageBox.Show("EXIF correct");
 
                                 files.SaveAs(path);
                                 try
