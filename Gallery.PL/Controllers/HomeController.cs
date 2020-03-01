@@ -13,5 +13,9 @@ namespace Gallery.PL.Controllers
         {
             return View();
         }
+        public ActionResult Info()
+        {
+            return View();
+        }
     }
 }
