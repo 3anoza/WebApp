@@ -1,0 +1,59 @@
+﻿.index {
+    margin:0;
+}
+.index-container {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 5px;
+}
+.index-image {
+    float: left;
+    width: 284px;
+    height: 177px;
+    cursor: pointer;
+}
+.index-button {
+    z-index: 1;
+    position: relative;
+    bottom: 12.6%;
+    right: -81%;
+}
+.index-preview-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    text-align: center;
+    z-index: 1;
+}
+.index-preview-backgorund {
+    background: rgba(0,0,0,0.4);
+    position: absolute;
+    z-index: 2;
+    height: 100%;
+    width: 100%;
+}
+.index-preview-image {
+    position: relative;
+    margin: 0 auto;
+    z-index: 3;
+    max-height: 94%;
+    max-width: 94%;
+    margin: 1% 0 0 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    top: 4%;
+}
+.index-preview-button {
+    position: absolute;
+    top: 5%;
+    margin: 0 auto;
+    z-index: 3;
+    max-height: 94%;
+    max-width: 94%;
+    margin: 1% 0 0 0;
+}

@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Gallery - Home Page";
+}
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    <div class="index">
+        <div class="index-container">
+            <img class="index-image" id="" src="" onclick="preview()" 
+                 title="File: 
+Name:
+Camera manifacturer:
+Camera model:
+Date:
+Resolution: x
+Size: KB" />
+            <input class="index-button" type="submit" name="" value="🗑" title="Delete image" />
+            <input class="index-button" type="submit" name="" value="⇩" title="Download image" />
+        </div>
+    </div>
+}
+
+<!--Scripts-->
+
+<script type="text/javascript">
+    function preview() {
+        $(document).ready(function () {
+            $(".index-image").click(function () {
+                var img = $(this);
+                var src = img.attr('src');
+                $("body").append(
+                    "<div class='index-preview-container'>" +
+                    "<div class='index-preview-background'></div>" +
+                    "<img src='" + src + "' class='index-preview-image' />" +
+                    "<button onclick='window.open(`" + src + "`,`_blank`)" + "' class='index-preview-button'> Open image in new window</button>" +
+                    "</div>");
+                $(".index-preview-container").fadeIn(500);
+                $(".index-preview-background").click(function () {
+                    $(".index-preview-container").fadeOut(500);
+                    setTimeout(() => {
+                        $(".index-preview-container").remove();
+                    },500);
+                });
+            });
+        });
+    }
+</script>

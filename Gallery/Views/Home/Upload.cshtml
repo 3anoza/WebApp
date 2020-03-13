@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Gallery - Upload Image";
+}
+
+<h2 class="upload-header">Upload Images</h2>
+<h5 class="upload-header"> Choose your JPEG/PNG file</h5>
+<div class="row upload-header">
+    <div class="col-md-4 upload-width">
+        @using (Html.BeginForm("Upload","Home",FormMethod.Post,new { enctype = "multipart/form-data" }))
+        {
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+            <div class="upload-container">
+                <div class="form-group upload-transform" >
+                    <label class="label">
+                        <i class="material-icons">attach_file</i>
+                        <span class="title">Upload Image</span>
+                        <input type="file"/>
+                    </label>
+                </div>
+            </div>
+            <input id="submit_button" type="submit" name="click" value="Confirm"/>
+            <p class="upload-error">@ViewBag.Error</p>
+        }
+    </div>
+</div>
+<style>
+
+    .upload-width {
+        width: 100%;
+    }
+    
+    .upload-transform {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .upload-header{
+        text-align:center;
+    }
+
+    .upload-error{
+        color:red;
+    }
+
+    .upload .center {
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    .upload-container .form-group {
+        padding: 1em;
+        margin: 1em
+    }
+
+    .upload-container input[type=file] {
+        outline: 0;
+        opacity: 0;
+        pointer-events: none;
+        user-select: none
+    }
+
+    .upload-container .label {
+        width: 120px;
+        border: 2px dashed grey;
+        border-radius: 5px;
+        display: block;
+        padding: 1.2em;
+        transition: border 300ms ease;
+        cursor: pointer;
+        text-align: center
+    }
+    .upload-container .label i {
+        display: block;
+        font-size: 42px;
+        padding-bottom: 16px
+    }
+
+    .upload-container .label i, .upload-container .label .title {
+        color: grey;
+        transition: 200ms color
+    }
+
+    .upload-container .label:hover {
+        border: 2px solid #000;
+        background-color: rgba(158, 158, 155, 0.05);
+    }
+
+    .upload-container .label:hover i, .upload-container .label:hover .title {
+        color: rgba(0, 0, 0, 0.7);
+        
+    }
+</style>
