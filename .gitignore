@@ -1,7 +1,7 @@
 #Project Directory
 /packages
-/Gallery.PL/bin
-/Gallery.PL/obj
+/Gallery/bin
+/Gallery/obj
 #Project Files
 *jpg
 *png
