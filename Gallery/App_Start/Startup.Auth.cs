@@ -14,6 +14,7 @@ namespace Gallery
                 AuthenticationType = "ApplicationCookie",
                 LoginPath = new PathString("/Account/Login"),
             });
+            DIConfig.Configure(new HttpConfiguration());
         }
     }
 }
