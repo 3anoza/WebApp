@@ -4,6 +4,8 @@ using Gallery.BLL.Services;
 using Gallery.DAL;
 using Gallery.DAL.Interfaces;
 using Gallery.DAL.Models;
+using Gallery.Interfaces;
+using Gallery.Services;
 
 namespace Gallery.Modules
 {

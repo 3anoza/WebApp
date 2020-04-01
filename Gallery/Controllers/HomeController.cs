@@ -8,16 +8,30 @@ namespace Gallery.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: Home
+        // GET: Index
         public ActionResult Index()
         {
 
             return View();
         }
-        
+        // POST: Index
+        [HttpPost]
+        public ActionResult Index(FormCollection collection)
+        {
+            return null;
+        }
+
+        // GET: Upload
+        [Authorize]
+        [HttpPost]
         public ActionResult Upload()
         {
             return View();
+        }
+        // POST: Upload
+        public ActionResult Upload(FormCollection collection)
+        {
+            return RedirectToAction("Index", "Home");
         }
     }
 }
