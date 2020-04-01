@@ -1,9 +1,14 @@
-﻿namespace Gallery.DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Gallery.DAL.Models
 {
+    [Table("Users")]
     public class User
     {
-        public int Id { get; set;}
-        public string Email { get; set; }
-        public string Password { get; set; }
+        [Key]
+        public int _userId { get; set;}
+        public string _email { get; set; }
+        public string _password { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Gallery.DAL.Models
     public class RegisterModel
     {
         [Required(ErrorMessage = "Empty Email. Please field this column.")]
+        [EmailAddress]
         //[DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
