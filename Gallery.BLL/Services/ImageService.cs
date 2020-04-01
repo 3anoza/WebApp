@@ -1,6 +1,8 @@
-﻿namespace Gallery.BLL.Services
+﻿using Gallery.BLL.Interfaces;
+
+namespace Gallery.BLL.Services
 {
-    public class ImageService
+    public class ImageService : IImageService
     {
         
     }
