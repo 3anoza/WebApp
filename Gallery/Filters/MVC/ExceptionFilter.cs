@@ -8,7 +8,8 @@ namespace Gallery.Filters.MVC
         public void OnException(
             ExceptionContext filterContext)
         {
-           // RedirectToRouteResult res = new RedirectToRouteResult("",new RouteValueDictionary());
+            throw filterContext.Exception;
+            // RedirectToRouteResult res = new RedirectToRouteResult("",new RouteValueDictionary());
         }
     }
 }
