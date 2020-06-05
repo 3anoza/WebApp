@@ -13,7 +13,7 @@ namespace Gallery.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<UserContext>()
+            builder.RegisterType<SqlContext>()
                 .AsSelf();
             builder.RegisterType<DbRepository>()
                 .As<IRepository>();
