@@ -14,6 +14,7 @@ namespace Gallery.Controllers
 
             return View();
         }
+        
         // POST: Index
         [HttpPost]
         public ActionResult Index(FormCollection collection)
@@ -28,6 +29,7 @@ namespace Gallery.Controllers
         {
             return View();
         }
+
         // POST: Upload
         public ActionResult Upload(FormCollection collection)
         {

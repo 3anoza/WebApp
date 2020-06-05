@@ -24,28 +24,31 @@ namespace Gallery.Controllers
             _userService = user ?? throw new ArgumentNullException(nameof(user));
             _authenticationService = authentication ?? throw new ArgumentNullException(nameof(authentication));
         }
+        
         // GET: Register
         public ActionResult Register()
         {
             return View();
         }
+        
         // POST: Register
         [LogFilter]
         [HttpPost]
         [ValidateAntiForgeryToken()]
+        [ValidateActionFilter]
         public async Task<ActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid)
             {
                 if (model.Password == model.ConfirmPassword)
                 {
-                    bool UserExist = await _userService.IsUserExistAsync(model.Email, model.Password);
+                    var UserExist = await _userService.IsUserExistAsync(model.Email, model.Password);
                     if (!UserExist)
                     {
                         AddUserDto userDto = new AddUserDto(model.Email, model.Password);
                         await _userService.AddUserAsync(userDto);
 
-                        string PersonId = _userService.GetPersonId(model.Email).ToString();
+                        var PersonId = _userService.GetPersonId(model.Email).ToString();
                         _authenticationService.AuthorizeContext(HttpContext.GetOwinContext(),_authenticationService.CreateClaim(PersonId));
                         return RedirectToAction("Index", "Home");
                     }
@@ -57,20 +60,23 @@ namespace Gallery.Controllers
             }
             return View(model);
         }
+
         // GET: Login
         public ActionResult Login()
         {
             return View();
         }
+
         // POST: Login
         [LogFilter]
         [HttpPost]
         [ValidateAntiForgeryToken()]
+        [ValidateActionFilter]
         public async Task<ActionResult> Login(LoginModel model)
         {
             if (ModelState.IsValid)
             {
-                bool isUserExist = await _userService.IsUserExistAsync(model.Email, model.Password);
+                var isUserExist = await _userService.IsUserExistAsync(model.Email, model.Password);
                 if (isUserExist)
                 {
                     var PersonId = _userService.GetPersonId(model.Email).ToString();
