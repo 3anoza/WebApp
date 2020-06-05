@@ -10,9 +10,9 @@ namespace Gallery.DAL
 {
     public class DbRepository : IRepository
     {
-        protected readonly UserContext Context = new UserContext();
+        protected readonly SqlContext Context = new SqlContext();
 
-        public DbRepository(UserContext context)
+        public DbRepository(SqlContext context)
         {
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -20,18 +20,18 @@ namespace Gallery.DAL
         public async Task<bool> IsUserExistAsync(string username, string plainPassword)
         {
             return await Context.Users.AnyAsync(u =>
-                u._email == username.Trim().ToLower() && u._password == plainPassword.Trim());
+                u.Email == username.Trim().ToLower() && u.Password == plainPassword.Trim());
         }
 
         public async Task AddUserToDatabaseAsync(string username, string plainPassword)
         {
-            Context.Users.Add(new User() {_email = username, _password = plainPassword});
+            Context.Users.Add(new User() {Email = username, Password = plainPassword});
             Context.SaveChanges();
         }
 
         public int GetPersonId(string username)
         {
-            return Context.Users.Where(u => u._email == username).Select(u => u._userId).FirstOrDefault();
+            return Context.Users.Where(u => u.Email == username).Select(u => u.Id).FirstOrDefault();
         }
     }
 }
