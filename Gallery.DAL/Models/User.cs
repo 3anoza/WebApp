@@ -13,5 +13,6 @@ namespace Gallery.DAL.Models
         public string Password { get; set; }
         public virtual ICollection<Role> Roles { get; set; } = new List<Role>();
         public virtual ICollection<Media> Media { get; set; } = new List<Media>();
+        public virtual ICollection<Attempts> Attempts { get; set; } = new List<Attempts>();
     }
 }
