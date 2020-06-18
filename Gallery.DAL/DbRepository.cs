@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Gallery.DAL.Contexts;
 using Gallery.DAL.Interfaces;
 using Gallery.DAL.Models;
 
