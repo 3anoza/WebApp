@@ -1,12 +1,16 @@
 #Project Directory
 /packages
-/.vs
 /Gallery/bin
 /Gallery/obj
 /Gallery.BLL/obj
 /Gallery.BLL/bin
 /Gallery.DAL/obj
 /Gallery.DAL/bin
+
+#Idea Folders
+/.vs
+/.idea
+
 #Project Files
 *jpg
 *png
