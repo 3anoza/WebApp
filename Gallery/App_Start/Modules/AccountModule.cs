@@ -2,6 +2,7 @@
 using Gallery.BLL.Interfaces;
 using Gallery.BLL.Services;
 using Gallery.DAL;
+using Gallery.DAL.Contexts;
 using Gallery.DAL.Interfaces;
 using Gallery.DAL.Models;
 using Gallery.Interfaces;
