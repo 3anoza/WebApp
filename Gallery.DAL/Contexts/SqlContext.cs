@@ -13,6 +13,7 @@ namespace Gallery.DAL.Contexts
         
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Attempts> Attempts { get; set; }
 
         // Fluent API method
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -22,12 +23,14 @@ namespace Gallery.DAL.Contexts
             modelBuilder.Entity<Role>().ToTable("Roles");
             modelBuilder.Entity<Media>().ToTable("Media");
             modelBuilder.Entity<MediaType>().ToTable("MediaTypes");
+            modelBuilder.Entity<Attempts>().ToTable("Attempts");
 
             // Set own primary key
             modelBuilder.Entity<User>().HasKey(p => p.Id);
             modelBuilder.Entity<Role>().HasKey(p => p.Id);
             modelBuilder.Entity<Media>().HasKey(p => p.Id);
             modelBuilder.Entity<MediaType>().HasKey(p => p.Id);
+            modelBuilder.Entity<Attempts>().HasKey(p => p.Id);
             
             // Not Null extensions
             modelBuilder.Entity<User>().Property(p => p.Id).IsRequired();
@@ -40,6 +43,7 @@ namespace Gallery.DAL.Contexts
             modelBuilder.Entity<Role>().Property(p => p.Name).HasMaxLength(16);
             modelBuilder.Entity<Media>().Property(p => p.Path).HasMaxLength(25);
             modelBuilder.Entity<MediaType>().Property(p => p.Type).HasMaxLength(6);
+            modelBuilder.Entity<Attempts>().Property(p => p.IpAddress).HasMaxLength(12);
 
             // Set column type
             modelBuilder.Entity<User>().Property(p => p.Email).HasColumnType("varchar");
@@ -47,7 +51,8 @@ namespace Gallery.DAL.Contexts
             modelBuilder.Entity<Role>().Property(p => p.Name).HasColumnType("varchar");
             modelBuilder.Entity<Media>().Property(p => p.Path).HasColumnType("varchar");
             modelBuilder.Entity<MediaType>().Property(p => p.Type).HasColumnType("varchar");
-            
+            modelBuilder.Entity<Attempts>().Property(p => p.IpAddress).HasColumnType("varchar");
+
             // Set relationships 
             // {
             
@@ -62,7 +67,11 @@ namespace Gallery.DAL.Contexts
             modelBuilder.Entity<MediaType>()
                 .HasMany(p => p.Media)
                 .WithRequired(c => c.MediaType);
-            
+
+            modelBuilder.Entity<User>()
+                .HasMany(p => p.Attempts)
+                .WithRequired(c => c.User);
+
             // }
 
 
