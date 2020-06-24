@@ -6,6 +6,8 @@
 /Gallery.BLL/bin
 /Gallery.DAL/obj
 /Gallery.DAL/bin
+/Gallery.FileStorage/bin
+/Gallery.FileStorage/obj
 
 #Idea Folders
 /.vs
@@ -14,3 +16,4 @@
 #Project Files
 *jpg
 *png
+*user
