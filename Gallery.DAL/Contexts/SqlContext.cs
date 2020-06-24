@@ -41,6 +41,31 @@ namespace Gallery.DAL.Contexts
             modelBuilder.Entity<Media>().Property(p => p.Path).HasMaxLength(25);
             modelBuilder.Entity<MediaType>().Property(p => p.Type).HasMaxLength(6);
 
+            // Set column type
+            modelBuilder.Entity<User>().Property(p => p.Email).HasColumnType("varchar");
+            modelBuilder.Entity<User>().Property(p => p.Password).HasColumnType("varchar");
+            modelBuilder.Entity<Role>().Property(p => p.Name).HasColumnType("varchar");
+            modelBuilder.Entity<Media>().Property(p => p.Path).HasColumnType("varchar");
+            modelBuilder.Entity<MediaType>().Property(p => p.Type).HasColumnType("varchar");
+            
+            // Set relationships 
+            // {
+            
+            modelBuilder.Entity<User>()
+                .HasMany(p => p.Roles)
+                .WithMany(c => c.Users);
+
+            modelBuilder.Entity<User>()
+                .HasMany(p => p.Media)
+                .WithRequired(c => c.User);
+            
+            modelBuilder.Entity<MediaType>()
+                .HasMany(p => p.Media)
+                .WithRequired(c => c.MediaType);
+            
+            // }
+
+
             base.OnModelCreating(modelBuilder);
         }
     }
