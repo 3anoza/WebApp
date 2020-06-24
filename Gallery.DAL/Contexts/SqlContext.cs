@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using Gallery.DAL.Models;
+using Gallery.DAL.Models.Configuration;
 
 namespace Gallery.DAL.Contexts
 {
@@ -18,63 +19,12 @@ namespace Gallery.DAL.Contexts
         // Fluent API method
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Mapping a class to a table
-            modelBuilder.Entity<User>().ToTable("Users");
-            modelBuilder.Entity<Role>().ToTable("Roles");
-            modelBuilder.Entity<Media>().ToTable("Media");
-            modelBuilder.Entity<MediaType>().ToTable("MediaTypes");
-            modelBuilder.Entity<Attempts>().ToTable("Attempts");
-
-            // Set own primary key
-            modelBuilder.Entity<User>().HasKey(p => p.Id);
-            modelBuilder.Entity<Role>().HasKey(p => p.Id);
-            modelBuilder.Entity<Media>().HasKey(p => p.Id);
-            modelBuilder.Entity<MediaType>().HasKey(p => p.Id);
-            modelBuilder.Entity<Attempts>().HasKey(p => p.Id);
+            modelBuilder.Configurations.Add(new AttemptConfig());
+            modelBuilder.Configurations.Add(new MediaConfig());
+            modelBuilder.Configurations.Add(new MediaTypeConfig());
+            modelBuilder.Configurations.Add(new RoleConfig());
+            modelBuilder.Configurations.Add(new UserConfig());
             
-            // Not Null extensions
-            modelBuilder.Entity<User>().Property(p => p.Id).IsRequired();
-            modelBuilder.Entity<User>().Property(p => p.Email).IsRequired();
-            modelBuilder.Entity<User>().Property(p => p.Password).IsRequired();
-            
-            // Set column length limit
-            modelBuilder.Entity<User>().Property(p => p.Email).HasMaxLength(64);
-            modelBuilder.Entity<User>().Property(p => p.Password).HasMaxLength(38);
-            modelBuilder.Entity<Role>().Property(p => p.Name).HasMaxLength(16);
-            modelBuilder.Entity<Media>().Property(p => p.Path).HasMaxLength(25);
-            modelBuilder.Entity<MediaType>().Property(p => p.Type).HasMaxLength(6);
-            modelBuilder.Entity<Attempts>().Property(p => p.IpAddress).HasMaxLength(12);
-
-            // Set column type
-            modelBuilder.Entity<User>().Property(p => p.Email).HasColumnType("varchar");
-            modelBuilder.Entity<User>().Property(p => p.Password).HasColumnType("varchar");
-            modelBuilder.Entity<Role>().Property(p => p.Name).HasColumnType("varchar");
-            modelBuilder.Entity<Media>().Property(p => p.Path).HasColumnType("varchar");
-            modelBuilder.Entity<MediaType>().Property(p => p.Type).HasColumnType("varchar");
-            modelBuilder.Entity<Attempts>().Property(p => p.IpAddress).HasColumnType("varchar");
-
-            // Set relationships 
-            // {
-            
-            modelBuilder.Entity<User>()
-                .HasMany(p => p.Roles)
-                .WithMany(c => c.Users);
-
-            modelBuilder.Entity<User>()
-                .HasMany(p => p.Media)
-                .WithRequired(c => c.User);
-            
-            modelBuilder.Entity<MediaType>()
-                .HasMany(p => p.Media)
-                .WithRequired(c => c.MediaType);
-
-            modelBuilder.Entity<User>()
-                .HasMany(p => p.Attempts)
-                .WithRequired(c => c.User);
-
-            // }
-
-
             base.OnModelCreating(modelBuilder);
         }
     }
