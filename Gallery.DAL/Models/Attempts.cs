@@ -4,16 +4,16 @@ namespace Gallery.DAL.Models
 {
     public class Attempts
     {
-        public long Id { get; private set; }
+        public long Id { get;  set; }
         
-        public DateTime TimeStamp { get; private set; }
+        public DateTime TimeStamp { get;  set; }
         
-        public bool Success { get; private set; }
+        public bool Success { get;  set; }
         
-        public string IpAddress { get; private set; }
+        public string IpAddress { get;  set; }
         
-        public int UserId { get; private set; }
+        public int UserId { get;  set; }
         
-        public virtual User User { get; private set; }
+        public virtual User User { get;  set; }
     }
 }
