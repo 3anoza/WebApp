@@ -1,25 +1,26 @@
-﻿namespace Gallery.FileStorage.Services
+﻿using System;
+using System.IO;
+
+namespace Gallery.FileStorage.Services
 {
     public class MediaStorageService : FileStorage.Interfaces.IMediaStorage 
     {
-        public bool IsExist(byte[] bytes)
+
+        public bool Upload(byte[] bytes, string path)
         {
-            throw new System.NotImplementedException();
+            File.WriteAllBytes(path, bytes);
+            return File.Exists(path);
         }
 
-        public void Create(byte[] bytes)
+        public bool Delete(string path)
         {
-            throw new System.NotImplementedException();
+            File.Delete(path);
+            return File.Exists(path);
         }
 
-        public void Update(byte[] bytes)
+        public byte[] Read(string path)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Delete(byte[] bytes)
-        {
-            throw new System.NotImplementedException();
+           return File.ReadAllBytes(path);
         }
     }
 }
