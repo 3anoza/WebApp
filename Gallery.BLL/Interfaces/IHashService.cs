@@ -2,6 +2,6 @@
 {
     public interface IHashService
     {
-        bool CompareHashes(string imageHash);
+        string CompareSha256Hashes(string data);
     }
 }
