@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Gallery.DAL.Contexts;
 using Gallery.DAL.Interfaces;
 using Gallery.DAL.Models;
+using SqlContext = Gallery.DAL.Contexts.SqlContext;
 
 namespace Gallery.DAL
 {
@@ -18,21 +19,51 @@ namespace Gallery.DAL
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<bool> IsUserExistAsync(string username, string plainPassword)
+        public async Task<bool> IsUserExistAsync(string userEmail, string password)
         {
             return await Context.Users.AnyAsync(u =>
-                u.Email == username.Trim().ToLower() && u.Password == plainPassword.Trim());
+                u.Email == userEmail.Trim().ToLower() && u.Password == password.Trim());
         }
 
-        public async Task AddUserToDatabaseAsync(string username, string plainPassword)
+        public async Task<User> FindUserAsync(string email, string password)
         {
-            Context.Users.Add(new User() {Email = username, Password = plainPassword});
+            return await Context.Users.FirstOrDefaultAsync(u =>
+                u.Email == email && u.Password == password);
+        }
+
+        public async Task AddUserToDatabaseAsync(string userEmail, string password)
+        {
+            Context.Users.Add(new User() {Email = userEmail, Password = password });
+            Role role = Context.Roles.First(r => r.Name == "user");
+            Context.Roles.Add(role);
             Context.SaveChanges();
         }
 
-        public int GetPersonId(string username)
+        public async Task AddAttemptToDatabaseAsync(string email, string ipAddress, bool isSuccess)
         {
-            return Context.Users.Where(u => u.Email == username).Select(u => u.Id).FirstOrDefault();
+            var user = await Context.Users.FirstOrDefaultAsync(p => p.Email == email);
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+            Attempts attempt = new Attempts {Id = 1,
+                    TimeStamp = DateTime.Now,
+                    Success = isSuccess,
+                    IpAddress = ipAddress,
+                    User = user
+            };
+            Context.Attempts.Add(attempt);
+            await Context.SaveChangesAsync();
+        }
+
+        public int GetPersonId(string userEmail)
+        {
+            return Context.Users.Where(u => u.Email == userEmail).Select(u => u.Id).FirstOrDefault();
+        }
+
+        public string GetUsersNames(int id)
+        {
+            return Context.Users.Where(u => u.Id == id).Select(u => u.Email).FirstOrDefault();
         }
     }
 }
