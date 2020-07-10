@@ -46,7 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\AddUserDto.cs" />
+    <Compile Include="Contracts\AttemptsDTO.cs" />
     <Compile Include="Contracts\UserDto.cs" />
     <Compile Include="Interfaces\IImageService.cs" />
     <Compile Include="Interfaces\IExifDataService.cs" />
@@ -62,6 +62,10 @@
     <ProjectReference Include="..\Gallery.DAL\Gallery.DAL.csproj">
       <Project>{e751f02f-df20-4ceb-9f31-938cf7ce7762}</Project>
       <Name>Gallery.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gallery.FileStorage\Gallery.FileStorage.csproj">
+      <Project>{DDB5268A-D624-4F41-B618-7BE9AFDBCCAA}</Project>
+      <Name>Gallery.FileStorage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
