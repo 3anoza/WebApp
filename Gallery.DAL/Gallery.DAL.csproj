@@ -56,6 +56,11 @@
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Attempts.cs" />
+    <Compile Include="Models\Configuration\AttemptConfig.cs" />
+    <Compile Include="Models\Configuration\MediaConfig.cs" />
+    <Compile Include="Models\Configuration\MediaTypeConfig.cs" />
+    <Compile Include="Models\Configuration\RoleConfig.cs" />
+    <Compile Include="Models\Configuration\UserConfig.cs" />
     <Compile Include="Models\Media.cs" />
     <Compile Include="Models\MediaType.cs" />
     <Compile Include="Models\Models.cs" />
@@ -69,6 +74,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
