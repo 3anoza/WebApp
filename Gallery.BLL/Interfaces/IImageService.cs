@@ -1,4 +1,7 @@
-﻿namespace Gallery.BLL.Interfaces
+﻿using System.Threading.Tasks;
+using Gallery.BLL.Contracts;
+
+namespace Gallery.BLL.Interfaces
 {
     public interface IImageService
     {
@@ -8,13 +11,13 @@
         /// <param name="bytes">file in byte array</param>
         /// <param name="path">path to the saved directory</param>
         /// <returns>Execution result</returns>
-        bool Upload(byte[] bytes, string path);
+        Task<bool> UploadImageAsync(byte[] bytes, string path, UserDto userDto);
         /// <summary>
         /// The method deletes the file at the given path 
         /// </summary>
         /// <param name="path">path to file</param>
         /// <returns>Execution result</returns>
-        bool Delete(string path);
+        Task<bool> DeleteImageAsync(string path);
         /// <summary>
         /// The method read all bytes from the given path
         /// </summary>
