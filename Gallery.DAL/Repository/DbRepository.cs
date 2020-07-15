@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
-using Gallery.DAL.Contexts;
 using Gallery.DAL.Interfaces;
 using Gallery.DAL.Models;
 using SqlContext = Gallery.DAL.Contexts.SqlContext;
 
-namespace Gallery.DAL
+namespace Gallery.DAL.Repository
 {
     public class DbRepository : IRepository
     {
@@ -22,13 +20,23 @@ namespace Gallery.DAL
         public async Task<bool> IsUserExistAsync(string userEmail, string password)
         {
             return await Context.Users.AnyAsync(u =>
-                u.Email == userEmail.Trim().ToLower() && u.Password == password.Trim());
+                u.Email == userEmail && u.Password == password);
         }
 
         public async Task<User> FindUserAsync(string email, string password)
         {
             return await Context.Users.FirstOrDefaultAsync(u =>
                 u.Email == email && u.Password == password);
+        }
+
+        public async Task<bool> IsUserExistByEmailAsync(string email)
+        {
+            return await Context.Users.AnyAsync(u => u.Email == email);
+        }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            return await Context.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task AddUserToDatabaseAsync(string userEmail, string password)
@@ -42,11 +50,7 @@ namespace Gallery.DAL
         public async Task AddAttemptToDatabaseAsync(string email, string ipAddress, bool isSuccess)
         {
             var user = await Context.Users.FirstOrDefaultAsync(p => p.Email == email);
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-            Attempts attempt = new Attempts {Id = 1,
+            Attempts attempt = new Attempts {
                     TimeStamp = DateTime.Now,
                     Success = isSuccess,
                     IpAddress = ipAddress,
@@ -61,9 +65,5 @@ namespace Gallery.DAL
             return Context.Users.Where(u => u.Email == userEmail).Select(u => u.Id).FirstOrDefault();
         }
 
-        public string GetUsersNames(int id)
-        {
-            return Context.Users.Where(u => u.Id == id).Select(u => u.Email).FirstOrDefault();
-        }
     }
 }
