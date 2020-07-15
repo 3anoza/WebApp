@@ -40,9 +40,9 @@ namespace Gallery.BLL.Services
             return await repository.IsUserExistByEmailAsync(userDto.UserEmail);
         }
 
-        public Task<UserDto> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByIdAsync(int id)
         {
-            var user = await repository.GetUsersNames(id);
+            var user = await repository.GetUserByIdAsync(id);
             if (user != null)
                 return new UserDto
                 {
