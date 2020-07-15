@@ -14,6 +14,8 @@ namespace Gallery.DAL.Contexts
         
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Media> Media { get; set; }
+        public DbSet<MediaType> MediaTypes { get; set; }
         public DbSet<Attempts> Attempts { get; set; }
 
         // Fluent API method
