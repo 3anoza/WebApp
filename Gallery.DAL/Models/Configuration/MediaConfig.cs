@@ -9,13 +9,20 @@ namespace Gallery.DAL.Models.Configuration
             // Mapping a class to a table
             ToTable("Media")
                 //Set primary key
-                .HasKey(p => p.Id);
-            
-            Property(p => p.Path)
-                // Set column type
-                .HasColumnType("varchar")
-                // Set column size
-                .HasMaxLength(25);
+                .HasKey(m => m.Id);
+
+            Property(m => m.Id)
+                .IsRequired();
+
+            Property(m => m.Path)
+                .IsRequired()
+                .HasMaxLength(500);
+
+            HasIndex(m => m.Path)
+                .IsUnique();
+
+            Property(m => m.IsDeleted)
+                .IsRequired();
         }
     }
 }
