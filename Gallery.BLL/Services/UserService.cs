@@ -24,13 +24,34 @@ namespace Gallery.BLL.Services
         public async Task<UserDto> FindUserAsync(UserDto userDto)
         {
             var user = await repository.FindUserAsync(userDto.UserEmail, userDto.Password);
-            return new UserDto
-            {
-                UserId = user.Id,
-                UserEmail = user.Email,
-                Password = user.Password,
-                UserRole = user.Roles.ToList()
-            };
+            if (user != null)
+                return new UserDto
+                {
+                    UserId = user.Id,
+                    UserEmail = user.Email,
+                    Password = user.Password,
+                    UserRole = user.Roles.ToList()
+                };
+            return null;
+        }
+
+        public async Task<bool> IsUserExistByEmailAsync(UserDto userDto)
+        {
+            return await repository.IsUserExistByEmailAsync(userDto.UserEmail);
+        }
+
+        public Task<UserDto> GetUserByIdAsync(int id)
+        {
+            var user = await repository.GetUsersNames(id);
+            if (user != null)
+                return new UserDto
+                {
+                    UserId = user.Id,
+                    UserEmail = user.Email,
+                    Password = user.Password,
+                    UserRole = user.Roles.ToList()
+                };
+            return null;
         }
 
         public async Task AddUserAsync(UserDto userDto)
