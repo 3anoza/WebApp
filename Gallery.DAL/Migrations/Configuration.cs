@@ -10,7 +10,8 @@ namespace Gallery.DAL.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            ContextKey = "Gallery.DAL.Contexts.SqlContext";
         }
     } 
 }
