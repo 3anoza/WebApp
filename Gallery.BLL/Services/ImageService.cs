@@ -33,9 +33,21 @@ namespace Gallery.BLL.Services
                     await _mediaRepository.MediaDeletedStatusUpdateAsync(path, false);
                 }
             }
+            else
+            {
+                var extension = Path.GetExtension(path);
+                var user = await _repository.FindUserAsync(userDto.UserEmail, userDto.Password);
+                var isMediaTypeExist = await _mediaRepository.IsMediaExistAsync(extension);
+                if (!isMediaTypeExist)
+                {
+                    await _mediaRepository.AddMediaTypeToDatabaseAsync(extension);
+                }
 
-            var extension = Path.GetExtension(path);
-            var user = await _repository.FindUserAsync(userDto.UserEmail, userDto.Password);
+                var mediaType = await _mediaRepository.GetMediaTypeAsync(extension);
+                var fileName = Path.GetFileName(path);
+                await _mediaRepository.AddMediaToDatabaseAsync(fileName, path, user, mediaType);
+            }
+            
             return _mediaStorage.Upload(bytes, path);
         }
 
@@ -63,10 +75,18 @@ namespace Gallery.BLL.Services
 
         public async Task<bool> DeleteImageAsync(string path)
         {
-            var IsMediaExistAsync = await _mediaRepository.IsMediaExistAsync(path);
-            if (IsMediaExistAsync)
+            if (!File.Exists(path))
             {
-                await _mediaRepository.MediaDeletedStatusUpdateAsync(path, true);
+                throw new FileNotFoundException(nameof(path));
+            }
+            var isMediaExistAsync = await _mediaRepository.IsMediaExistAsync(path);
+            if (isMediaExistAsync)
+            {
+                var media = await _mediaRepository.GetMediaByPathAsync(path);
+                if (!media.IsDeleted)
+                {
+                    await _mediaRepository.MediaDeletedStatusUpdateAsync(path, true);
+                }
             }
             return _mediaStorage.Delete(path);
         }
