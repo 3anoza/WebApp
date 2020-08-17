@@ -233,6 +233,10 @@
       <Project>{e751f02f-df20-4ceb-9f31-938cf7ce7762}</Project>
       <Name>Gallery.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Gallery.FileStorage\Gallery.FileStorage.csproj">
+      <Project>{ddb5268a-d624-4f41-b618-7be9afdbccaa}</Project>
+      <Name>Gallery.FileStorage</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

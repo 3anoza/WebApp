@@ -1,6 +1,11 @@
 ﻿using Autofac;
 using Gallery.BLL.Interfaces;
 using Gallery.BLL.Services;
+using Gallery.DAL.Interfaces;
+using Gallery.DAL.Repository;
+using Gallery.FileStorage;
+using Gallery.FileStorage.Interfaces;
+using Gallery.FileStorage.Services;
 
 namespace Gallery.Modules
 {
@@ -13,6 +18,12 @@ namespace Gallery.Modules
 
             builder.RegisterType<HashService>()
                 .As<IHashService>();
+
+            builder.RegisterType<MediaStorageService>()
+                .As<IMediaStorage>();
+
+            builder.RegisterType<MediaRepository>()
+                .As<IMediaRepository>();
         }
     }
 }
