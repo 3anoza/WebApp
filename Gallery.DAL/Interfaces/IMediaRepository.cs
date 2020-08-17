@@ -11,7 +11,7 @@ namespace Gallery.DAL.Interfaces
     {
         Task<bool> IsMediaExistAsync(string path);
         Task MediaDeletedStatusUpdateAsync(string path,bool status);
-        Task AddMediaToDatabaseAsync(string name, string path, int userId, int mediaTypeId);
+        Task AddMediaToDatabaseAsync(string name, string path, User user, MediaType mediaType);
         Task<Media> GetMediaByPathAsync(string path);
         Task<bool> IsMediaTypeExistAsync(string extension);
         Task AddMediaTypeToDatabaseAsync(string type);

@@ -32,14 +32,14 @@ namespace Gallery.DAL.Repository
             await Context.SaveChangesAsync();
         }
 
-        public async Task AddMediaToDatabaseAsync(string name, string path, int userId, int mediaTypeId)
+        public async Task AddMediaToDatabaseAsync(string name, string path, User user, MediaType mediaType)
         {
             Context.Media.Add(new Media
             {
                 Name = name,
                 Path = path,
-                PersonId = userId,
-                MediaTypeId = mediaTypeId
+                PersonId = user.Id,
+                MediaTypeId = mediaType.Id
             });
             await Context.SaveChangesAsync();
         }
@@ -49,19 +49,23 @@ namespace Gallery.DAL.Repository
             return await Context.Media.FirstOrDefaultAsync(m => m.Path == path);
         }
 
-        public Task<bool> IsMediaTypeExistAsync(string extension)
+        public async Task<bool> IsMediaTypeExistAsync(string extension)
         {
-            throw new NotImplementedException();
+            return await Context.MediaTypes.AnyAsync(m => m.Type == extension);
         }
 
-        public Task AddMediaTypeToDatabaseAsync(string type)
+        public async Task AddMediaTypeToDatabaseAsync(string type)
         {
-            throw new NotImplementedException();
+            Context.MediaTypes.Add(new MediaType
+            {
+                Type = type
+            });
+            await Context.SaveChangesAsync();
         }
 
-        public Task<MediaType> GetMediaTypeAsync(string extension)
+        public async Task<MediaType> GetMediaTypeAsync(string extension)
         {
-            throw new NotImplementedException();
+            return await Context.MediaTypes.FirstOrDefaultAsync(m => m.Type == extension);
         }
     }
 }
